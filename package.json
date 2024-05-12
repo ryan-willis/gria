@@ -1,0 +1,43 @@
+{
+  "name": "gria",
+  "version": "0.0.0",
+  "description": "GRIA - GitHub Repo Image API for GitHub Profiles",
+  "main": "dist/api.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist/*",
+    "prebuild": "npm run clean",
+    "build": "esbuild src/api.ts --bundle --platform=node --external:canvas --loader:.node=file --outfile=dist/api.cjs",
+    "build:docker": "npm run build && docker build -t ghcr.io/ryan-willis/gria:latest .",
+    "publish:docker": "docker push ghcr.io/ryan-willis/gria:latest",
+    "start": "npx tsx src/api.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryan-willis/gria.git"
+  },
+  "keywords": [
+    "github",
+    "repo",
+    "image",
+    "api",
+    "profile"
+  ],
+  "author": "Ryan Willis <code@ryanwillis.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryan-willis/gria/issues"
+  },
+  "homepage": "https://github.com/ryan-willis/gria#readme",
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "esbuild": "^0.21.1",
+    "tsx": "^4.10.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "fastify": "^4.27.0"
+  }
+}
