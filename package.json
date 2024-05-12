@@ -8,7 +8,7 @@
     "clean": "rm -rf dist/*",
     "prebuild": "npm run clean",
     "build": "esbuild src/api.ts --bundle --platform=node --external:canvas --loader:.node=file --outfile=dist/api.cjs",
-    "build:docker": "npm run build && docker build -t ghcr.io/ryan-willis/gria:latest .",
+    "build:docker": "docker build -t ghcr.io/ryan-willis/gria:latest .",
     "publish:docker": "docker push ghcr.io/ryan-willis/gria:latest",
     "start": "npx tsx src/api.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

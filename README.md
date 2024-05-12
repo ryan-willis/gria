@@ -13,8 +13,8 @@ https://gria.smug.af/{username}/{repository}
 Some examples of a few repositories
 
 <div align="center">
-  <a href="https://github.com/ryan-willis/icon-workshop"><img src="https://gria.smug.af/ryan-willis/icon-workshop" width="412px" /></a>
-  <a href="https://github.com/ryan-willis/netivity"><img src="https://gria.smug.af/ryan-willis/netivity" width="412px"/></a>
+  <a href="https://github.com/ryan-willis/icon-workshop"><img src="https://gria.smug.af/ryan-willis/icon-workshop?t=1" width="412px" /></a>
+  <a href="https://github.com/ryan-willis/netivity"><img src="https://gria.smug.af/ryan-willis/netivity?t=2" width="412px"/></a>
 </div>
 
 ## Development

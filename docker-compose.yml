@@ -1,0 +1,7 @@
+services:
+  gria:
+    build: .
+    ports:
+      - "6069:6069"
+    env_file:
+      - .env.test
