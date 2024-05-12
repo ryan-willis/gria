@@ -1,4 +1,4 @@
-import fastify from "fastify";
+import fastify, { FastifyReply, FastifyRequest } from "fastify";
 import { Image, createCanvas } from "canvas";
 
 import { fetchRepoInfo, refreshToken } from "./github/client";
@@ -23,7 +23,7 @@ interface RepoGetParams {
   owner: string;
   repo: string;
 }
-app.get("/:owner/:repo", async (request, reply) => {
+const handler = async (request: FastifyRequest, reply: FastifyReply) => {
   const { owner, repo } = request.params as RepoGetParams;
   app.log.info(`Fetching repo info for ${owner}/${repo}`);
   const repoData = await fetchRepoInfo(app.log, owner, repo);
@@ -88,7 +88,13 @@ app.get("/:owner/:repo", async (request, reply) => {
   reply.header("Content-Type", "image/png");
   reply.header("Cache-Control", "no-cache");
   reply.send(canvas.toBuffer("image/png"));
+};
+app.get("/ryan-willis/:repo", async (request, reply) => {
+  // @ts-ignore
+  request.params.owner = "ryan-willis";
+  return handler(request, reply);
 });
+app.get("/repo/:owner/:repo", handler);
 
 (async () => {
   try {
