@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "canvas": "^2.11.2",
-    "fastify": "^4.27.0"
+    "fastify": "^4.27.0",
+    "simple-icons": "^11.14.0"
   }
 }

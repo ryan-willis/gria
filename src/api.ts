@@ -3,7 +3,7 @@ import { Image, createCanvas } from "canvas";
 
 import { fetchRepoInfo, refreshToken } from "./github/client";
 import { getLines } from "./util/canvas";
-import { fetchLanguageIcons } from "./simple-icons/client";
+import { getLanguageIcons } from "./simple-icons/client";
 
 let starIcon: string;
 
@@ -53,7 +53,7 @@ const handler = async (request: FastifyRequest, reply: FastifyReply) => {
   const { owner, repo } = request.params as RepoGetParams;
   app.log.info(`Fetching repo info for ${owner}/${repo}`);
   const repoData = await fetchRepoInfo(app.log, owner, repo);
-  const languageIcons = await fetchLanguageIcons(repoData.langData);
+  const languageIcons = await getLanguageIcons(repoData.langData);
   const canvas = createCanvas(814, 464);
   const ctx = canvas.getContext("2d");
   const gra = ctx.createLinearGradient(0, 0, 0, 464);
