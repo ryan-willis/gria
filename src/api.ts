@@ -14,9 +14,35 @@ const app = fastify({
   disableRequestLogging: true,
 });
 
+interface IContext {
+  startTime: number;
+}
+
 app.setErrorHandler((error, _, reply) => {
   app.log.error(error);
   reply.status(500).send({ error: "Internal Server Error" });
+});
+
+app.addHook<any, IContext>("onRequest", (req, _, done) => {
+  req.context.config.startTime = Date.now();
+  done();
+});
+
+app.addHook<any, IContext>("onResponse", (request, reply, done) => {
+  app.log.info(
+    {
+      method: request.method,
+      url: request.url,
+      headers: request.headers,
+      hostname: request.hostname,
+      remoteAddress: request.ip,
+      remotePort: request.socket.remotePort,
+      statusCode: reply.raw.statusCode,
+      durationMs: Date.now() - request.context.config.startTime,
+    },
+    "served response"
+  );
+  done();
 });
 
 interface RepoGetParams {
