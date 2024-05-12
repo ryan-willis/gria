@@ -4,6 +4,7 @@ const LANGUAGE_RENAMES: Record<string, string> = {
   SCSS: "sass",
   HTML: "html5",
   Shell: "gnubash",
+  Dockerfile: "docker",
 };
 
 function getLanguageIconName(language: string) {
