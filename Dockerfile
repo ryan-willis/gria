@@ -17,6 +17,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
     && rm -fr /root/.cache /root/.npm
 
 COPY src /app/src
+COPY public /app/public
 RUN npm run build && rm -fr src
 
 EXPOSE 6069

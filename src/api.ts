@@ -1,4 +1,5 @@
 import fastify, { FastifyReply, FastifyRequest } from "fastify";
+import { readFileSync } from "fs";
 import { Image, createCanvas } from "canvas";
 
 import { fetchRepoInfo, refreshToken } from "./github/client";
@@ -115,6 +116,16 @@ const handler = async (request: FastifyRequest, reply: FastifyReply) => {
   reply.header("Cache-Control", "no-cache");
   reply.send(canvas.toBuffer("image/png"));
 };
+const indexFile = readFileSync("public/index.html");
+app.get("/:file?", (request, reply) => {
+  const { file } = request.params as { file?: string };
+  if (file && file !== "index.html") {
+    reply.status(404).send({ error: "Not Found" });
+    return;
+  }
+  reply.header("Content-Type", "text/html");
+  reply.send(indexFile);
+});
 app.get("/ryan-willis/:repo", async (request, reply) => {
   // @ts-ignore
   request.params.owner = "ryan-willis";
