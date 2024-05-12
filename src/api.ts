@@ -1,8 +1,9 @@
 import fastify from "fastify";
 import { Image, createCanvas } from "canvas";
 
-import { fetchRepoInfo } from "./github/client";
+import { fetchRepoInfo, refreshToken } from "./github/client";
 import { getLines } from "./util/canvas";
+import { fetchLanguageIcons } from "./simple-icons/client";
 
 let starIcon: string;
 
@@ -24,7 +25,9 @@ interface RepoGetParams {
 }
 app.get("/:owner/:repo", async (request, reply) => {
   const { owner, repo } = request.params as RepoGetParams;
-  const repoData = await fetchRepoInfo(owner, repo);
+  app.log.info(`Fetching repo info for ${owner}/${repo}`);
+  const repoData = await fetchRepoInfo(app.log, owner, repo);
+  const languageIcons = await fetchLanguageIcons(repoData.langData);
   const canvas = createCanvas(814, 464);
   const ctx = canvas.getContext("2d");
   const gra = ctx.createLinearGradient(0, 0, 0, 464);
@@ -37,7 +40,7 @@ app.get("/:owner/:repo", async (request, reply) => {
   ctx.font = "bold 36pt 'Monaspace Neon'";
   ctx.textAlign = "left";
   ctx.fillStyle = "#ffffff";
-  ctx.fillText(repo, 20, 60, 560);
+  ctx.fillText(repo, 20, 60, 775);
 
   ctx.font = "bold 24pt 'Monaspace Neon'";
   let lines = getLines(
@@ -52,10 +55,10 @@ app.get("/:owner/:repo", async (request, reply) => {
   for (let i = 0; i < lines.length; i++) {
     ctx.fillText(lines[i], 20, 110 + i * 40, 764);
   }
-  const numLanguageIcons = Math.min(repoData.languageIcons.length, 6);
-  for (let i = 0; i < numLanguageIcons; i++) {
+  const numLanguages = Math.min(languageIcons.length, 7);
+  for (let i = 0; i < numLanguages; i++) {
     const img = await new Promise<Image>((resolve, reject) => {
-      const svg: string = repoData.languageIcons[i].svg;
+      const svg: string = languageIcons[i];
       const img = new Image();
       img.onload = () => resolve(img);
       img.onerror = (e) => reject(e);
@@ -80,21 +83,24 @@ app.get("/:owner/:repo", async (request, reply) => {
   );
 
   ctx.font = "bold 32pt 'Monaspace Neon'";
-  ctx.fillText(stargazers, 656 + (3 - stargazers.length) * 8, 438, 96);
-  ctx.drawImage(img, 750, 400, 48, 48);
+  ctx.fillText(stargazers, 736 - stargazers.length * 24, 428, 96);
+  ctx.drawImage(img, 750, 390, 48, 48);
   reply.header("Content-Type", "image/png");
+  reply.header("Cache-Control", "no-cache");
   reply.send(canvas.toBuffer("image/png"));
 });
 
 (async () => {
   try {
+    app.log.info("Fetching star icon");
     const starSVG = await fetch(
       "https://s2.svgbox.net/hero-outline.svg?color=white&ic=star"
     );
 
     const starSVGRaw = await starSVG.text();
-
     starIcon = starSVGRaw.replace("<svg", '<svg width="48" height="48"');
+
+    await refreshToken(app.log);
 
     await app.listen({ port: 6069, host: "0.0.0.0" });
   } catch (err) {
