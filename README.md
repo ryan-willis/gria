@@ -7,16 +7,16 @@ API for fetching public repo summary images for use in GitHub profile READMEs.
 To fetch an image for a public GitHub repository, in your README.md, use this markdown:
 
 ```markdown
-![{username}/{repository}](https://gria.smug.af/{username}/{repository})
+![{username}/{repository}](https://gria.smug.af/repo/{username}/{repository})
 ```
 Here's what that looks like for this repository:
-![ryan-willis/vlang](https://gria.smug.af/ryan-willis/gria)
+![ryan-willis/vlang](https://gria.smug.af/repo/ryan-willis/gria)
 
 Some examples of a other repositories:
 
 <div align="center">
-  <a href="https://github.com/ryan-willis/icon-workshop"><img src="https://gria.smug.af/ryan-willis/icon-workshop?t=1" width="49%" /></a>
-  <a href="https://github.com/ryan-willis/netivity"><img src="https://gria.smug.af/ryan-willis/netivity?t=2" width="49%"/></a>
+  <a href="https://github.com/ryan-willis/icon-workshop"><img src="https://gria.smug.af/repo/ryan-willis/icon-workshop" width="49%" /></a>
+  <a href="https://github.com/ryan-willis/netivity"><img src="https://gria.smug.af/repo/ryan-willis/netivity" width="49%"/></a>
 </div>
 
 ## Development
@@ -29,4 +29,4 @@ To run the server locally:
 npm start
 ```
 
-And visit http://localhost:6069/ryan-willis/gria to see the image for this repository.
+And visit http://localhost:6069/repo/ryan-willis/gria to see the image for this repository.
