@@ -6,7 +6,8 @@
     <style>
       @font-face {
         font-family: "Monaspace Neon";
-        src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.000/fonts/webfonts/MonaspaceNeon-Regular.woff");
+        font-style: normal;
+        src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.000/fonts/webfonts/MonaspaceNeon-Regular.woff") format("woff");
       }
       :root {
         font-size: 16px;
@@ -18,7 +19,6 @@
         min-width: 860px;
       }
       body {
-        font-family: "Monaspace Neon", monospace;
         background: fixed linear-gradient(180deg, #073a67, #040b29);
         color: white;
       }
@@ -26,15 +26,18 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: "Monaspace Neon", monospace;
+        font-weight: 400;
       }
       input[type="text"] {
         font-size: 1rem;
         padding: 0.25rem;
-        font-family: "Monaspace Neon", monospace;
         border: 2px solid rgba(255, 255, 255, 0.5);
         background: transparent;
         color: white;
         width: 13.85rem;
+        border-radius: 0 !important;
+        height: 1.96rem;
       }
       input[type="text"]:focus {
         outline: none;
@@ -43,12 +46,11 @@
       input[type="submit"] {
         font-size: 1rem;
         padding: 0.33rem;
-        font-family: "Monaspace Neon", monospace;
         background: rgba(220, 220, 220, 1);
         color: #073a67;
         border: none;
         cursor: pointer;
-        width: 9.45rem;
+        border-radius: 0 !important;
       }
       input[type="submit"]:hover {
         background: rgba(255, 255, 255, 1);
@@ -112,7 +114,6 @@
       button {
         font-size: 1rem;
         padding: 0.5rem;
-        font-family: "Monaspace Neon", monospace;
         background: rgba(220, 220, 220, 1);
         color: #073a67;
         border: none;
@@ -137,7 +138,7 @@
           >/</span
         ><input type="text" id="repo-name" placeholder="gria" /><input
           type="submit"
-          value="Generate Image"
+          value="Generate"
         />
       </form>
     </div>
@@ -173,7 +174,7 @@
           .value.trim()
           .toLowerCase();
         if (repoOwner.length === 0 || repoName.length === 0) {
-          button.value = "Generate Image";
+          button.value = "Generate";
           button.disabled = false;
           alert("Please enter a valid GitHub repository owner and name.");
           return false;
@@ -181,29 +182,27 @@
         const griaPreviewImage = document.getElementById("gria-preview-image");
         const src = `https://gria.smug.af/repo/${repoOwner}/${repoName}`;
         if (griaPreviewImage.src == src) {
-          button.value = "Generate Image";
+          button.value = "Generate";
           button.disabled = false;
           return false;
         }
         griaPreviewImage.onload = function () {
-            const griaCopy = document.querySelector(".gria-copy");
-            griaCopy.classList.remove("gria-hidden");
+          const griaCopy = document.querySelector(".gria-copy");
+          griaCopy.classList.remove("gria-hidden");
           griaPreviewImage.classList.add("gria-preview-image");
-          button.value = "Generate Image";
+          button.value = "Generate";
           button.disabled = false;
         };
         griaPreviewImage.src = src;
         return false;
       }
       function textCopy(type) {
-        const repoName = document
-          .getElementById("repo-name")
-          .value.trim()
-          .toLowerCase() || "gria";
-        const repoOwner = document
-          .getElementById("repo-owner")
-          .value.trim()
-          .toLowerCase() || "ryan-willis";
+        const repoName =
+          document.getElementById("repo-name").value.trim().toLowerCase() ||
+          "gria";
+        const repoOwner =
+          document.getElementById("repo-owner").value.trim().toLowerCase() ||
+          "ryan-willis";
         const src = `https://gria.smug.af/repo/${repoOwner}/${repoName}`;
         const text = type == 0 ? `![${repoName}](${src})` : src;
         navigator.clipboard.writeText(text).then(
