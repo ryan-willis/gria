@@ -4,6 +4,10 @@ import { Image, createCanvas } from "canvas";
 import { fetchRepoInfo } from "./github/client";
 import { getLines } from "./util/canvas";
 
+let starIcon: string;
+
+const starFormatter = Intl.NumberFormat("en", { notation: "compact" });
+
 const app = fastify({
   logger: true,
   disableRequestLogging: true,
@@ -61,12 +65,37 @@ app.get("/:owner/:repo", async (request, reply) => {
     });
     ctx.drawImage(img, 20 + i * 80, 380, 64, 64);
   }
+
+  const img = await new Promise<Image>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = (e) => reject(e);
+    img.src = `data:image/svg+xml;base64,${Buffer.from(starIcon).toString(
+      "base64"
+    )}`;
+  });
+
+  const stargazers = starFormatter.format(
+    repoData.parent?.stargazers_count || repoData.stargazers_count
+  );
+
+  ctx.font = "bold 32pt 'Monaspace Neon'";
+  ctx.fillText(stargazers, 656 + (3 - stargazers.length) * 8, 438, 96);
+  ctx.drawImage(img, 750, 400, 48, 48);
   reply.header("Content-Type", "image/png");
   reply.send(canvas.toBuffer("image/png"));
 });
 
 (async () => {
   try {
+    const starSVG = await fetch(
+      "https://s2.svgbox.net/hero-outline.svg?color=white&ic=star"
+    );
+
+    const starSVGRaw = await starSVG.text();
+
+    starIcon = starSVGRaw.replace("<svg", '<svg width="48" height="48"');
+
     await app.listen({ port: 6069, host: "0.0.0.0" });
   } catch (err) {
     app.log.error(err);
