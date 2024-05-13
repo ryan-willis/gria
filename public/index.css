@@ -65,6 +65,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 2;
   }
   /* .gria-icons a, .gria-icons img { */
   .gria-icons img {
@@ -79,6 +80,7 @@
     text-align: center;
     width: 100vw;
     font-size: .75rem;
+    z-index: 1;
   }
   .gria-repo-form {
     padding: 1rem;
