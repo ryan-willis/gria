@@ -18,7 +18,7 @@ function generateImage(event) {
     return false;
   }
   const griaPreviewImage = document.getElementById("gria-preview-image");
-  const src = `https://gria.smug.af/repo/${repoOwner}/${repoName}`;
+  const src = `/repo/${repoOwner}/${repoName}`;
   if (griaPreviewImage.src == src) {
     button.value = "Generate";
     button.disabled = false;
@@ -40,14 +40,19 @@ function textCopy(type) {
   const repoOwner =
     document.getElementById("repo-owner").value.trim().toLowerCase() ||
     "ryan-willis";
-  const src = `https://gria.smug.af/repo/${repoOwner}/${repoName}`;
+  const src = `${window.location.protocol}//${window.location.host}/repo/${repoOwner}/${repoName}`;
   const text = type == 0 ? `![${repoName}](${src})` : src;
-  navigator.clipboard.writeText(text).then(
-    function () {
-      alert("Copied to clipboard!");
-    },
-    function () {
-      alert("Failed to copy to clipboard.");
-    }
-  );
+  try {
+    navigator.clipboard.writeText(text).then(
+      function () {
+        alert("Copied to clipboard!");
+      },
+      function () {
+        alert("Failed to copy to clipboard.");
+      }
+    );
+  } catch (error) {
+    console.log(text);
+    console.error(error);
+  }
 }

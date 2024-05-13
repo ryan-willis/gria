@@ -5,6 +5,7 @@ import * as si from "simple-icons";
 const LANGUAGE_RENAMES: Record<string, string> = {
   SCSS: "sass",
   HTML: "html5",
+  CSS: "css3",
   Shell: "gnubash",
   Dockerfile: "docker",
 };
