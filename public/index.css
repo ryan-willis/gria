@@ -1,0 +1,131 @@
+@font-face {
+    font-family: "Monaspace Neon";
+    font-style: normal;
+    src: url("https://cdn.jsdelivr.net/gh/githubnext/monaspace@v1.000/fonts/webfonts/MonaspaceNeon-Regular.woff")
+      format("woff");
+  }
+  :root {
+    font-size: 16px;
+  }
+  html,
+  body {
+    height: 100vh;
+    width: 100vw;
+    min-width: 860px;
+  }
+  body {
+    background: fixed linear-gradient(180deg, #073a67, #040b29);
+    color: white;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Monaspace Neon", monospace;
+    font-weight: 400;
+  }
+  input[type="text"] {
+    font-size: 1rem;
+    padding: 0.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: transparent;
+    color: white;
+    width: 13.85rem;
+    border-radius: 0 !important;
+    height: 1.96rem;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 1);
+  }
+  input[type="submit"] {
+    font-size: 1rem;
+    padding: 0.33rem;
+    background: rgba(220, 220, 220, 1);
+    color: #073a67;
+    border: none;
+    cursor: pointer;
+    border-radius: 0 !important;
+  }
+  input[type="submit"]:hover {
+    background: rgba(255, 255, 255, 1);
+    color: #073a67;
+  }
+  .gria-header {
+    font-size: 3rem;
+    padding: 1rem;
+  }
+  .gria-subheader {
+    font-size: 1.5rem;
+    padding: 1rem;
+    padding-top: 0;
+  }
+  .gria-icons {
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  /* .gria-icons a, .gria-icons img { */
+  .gria-icons img {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+  }
+  .gria-footer {
+    padding: 1.75rem;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    width: 100vw;
+    font-size: .75rem;
+  }
+  .gria-repo-form {
+    padding: 1rem;
+    line-height: 2.5rem;
+  }
+  .gria-url-prefix {
+    font-size: 1rem;
+    padding: 0.33rem;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-right: none;
+    color: rgba(200, 200, 200, 1);
+  }
+  .gria-url-slash {
+    padding: 0.33rem;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-left: none;
+    border-right: none;
+    color: rgba(200, 200, 200, 1);
+  }
+  .gria-preview {
+    padding: 1rem;
+  }
+  .gria-preview-image {
+    box-shadow: 0px 0px 0.75rem 0.25rem white;
+  }
+  .gria-copy {
+    text-align: center;
+    width: 814px;
+    padding: 1rem;
+  }
+  .gria-hidden {
+    display: none;
+  }
+  button {
+    font-size: 1rem;
+    padding: 0.5rem;
+    background: rgba(220, 220, 220, 1);
+    color: #073a67;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background: rgba(255, 255, 255, 1);
+    color: #073a67;
+  }
+  a, a:visited, a:active {
+    color: white;
+  }

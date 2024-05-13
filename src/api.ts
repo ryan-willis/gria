@@ -117,19 +117,35 @@ const handler = async (request: FastifyRequest, reply: FastifyReply) => {
   reply.send(canvas.toBuffer("image/png"));
 };
 const indexFile = readFileSync("public/index.html");
+// yeah, yeah, yeah, I know, I could do static files with fastify-static
+// but this also works and I don't have to install another dependency
+const cssFile = readFileSync("public/index.css");
+const jsFile = readFileSync("public/index.js");
+const files: Record<string, { type: string; buffer: Buffer }> = {
+  "index.css": {
+    type: "text/css",
+    buffer: cssFile,
+  },
+  "index.js": {
+    type: "text/javascript",
+    buffer: jsFile,
+  },
+  "index.html": {
+    type: "text/html",
+    buffer: indexFile,
+  },
+};
 app.get("/:file?", (request, reply) => {
   const { file } = request.params as { file?: string };
-  if (file && file !== "index.html") {
+  if (file && !Object.keys(files).includes(file)) {
     reply.status(404).send({ error: "Not Found" });
     return;
   }
-  reply.header("Content-Type", "text/html");
-  reply.send(indexFile);
-});
-app.get("/ryan-willis/:repo", async (request, reply) => {
-  // @ts-ignore
-  request.params.owner = "ryan-willis";
-  return handler(request, reply);
+  reply.header(
+    "Content-Type",
+    file ? files[file].type : files["index.html"].type
+  );
+  reply.send(file ? files[file].buffer : files["index.html"].buffer);
 });
 app.get("/repo/:owner/:repo", handler);
 
