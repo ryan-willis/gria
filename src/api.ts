@@ -1,4 +1,5 @@
 import fastify, { FastifyReply, FastifyRequest } from "fastify";
+import fastifyCaching from "@fastify/caching";
 import { readFileSync } from "fs";
 import { Image, createCanvas } from "canvas";
 
@@ -18,6 +19,12 @@ const app = fastify({
 interface IContext {
   startTime: number;
 }
+
+app.register(fastifyCaching, {
+  privacy: "public",
+  expiresIn: 600,
+  serverExpiresIn: 600,
+});
 
 app.setErrorHandler((error, _, reply) => {
   app.log.error(error);
@@ -113,7 +120,6 @@ const handler = async (request: FastifyRequest, reply: FastifyReply) => {
   ctx.fillText(stargazers, 736 - stargazers.length * 24, 428, 96);
   ctx.drawImage(img, 750, 390, 48, 48);
   reply.header("Content-Type", "image/png");
-  reply.header("Cache-Control", "no-cache");
   reply.send(canvas.toBuffer("image/png"));
 };
 const indexFile = readFileSync("public/index.html");
