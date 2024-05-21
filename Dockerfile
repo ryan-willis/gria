@@ -20,6 +20,9 @@ COPY src /app/src
 COPY public /app/public
 RUN npm run build && rm -fr src
 
+ARG GRIA_EXTRA=""
+RUN sed -i "s|<!--head_end-->|$GRIA_EXTRA|" public/index.html
+
 EXPOSE 6069
 
 ENTRYPOINT [ "/sbin/tini", "--" ]

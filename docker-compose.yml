@@ -1,6 +1,10 @@
 services:
   gria:
-    build: .
+    build:
+      context: .
+      tags: ["ghcr.io/ryan-willis/gria:latest"]
+      args:
+        - GRIA_EXTRA=$GRIA_EXTRA
     ports:
       - "6069:6069"
     env_file:
