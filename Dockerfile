@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:24-alpine
 
 WORKDIR /app
 COPY package*.json ./
@@ -10,7 +10,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
     && apk add --no-cache --virtual .runtime-deps \
     cairo jpeg pango giflib tini \
     && apk add --repository http://dl-3.alpinelinux.org/alpine/edge/testing font-monaspace-neon \
-    && npm install --build-from-source \
+    && npm install \
     && apk del --no-cache  \
     build-base g++ cairo-dev jpeg-dev pango-dev giflib-dev librsvg-dev \
     && npm cache clean --force \

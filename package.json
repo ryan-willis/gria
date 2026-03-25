@@ -8,8 +8,8 @@
     "clean": "rm -rf dist/*",
     "prebuild": "npm run clean",
     "build": "esbuild src/api.ts --bundle --platform=node --external:canvas --loader:.node=file --outfile=dist/api.cjs",
-    "build:docker": "docker compose build gria",
-    "publish:docker": "docker push ghcr.io/ryan-willis/gria:latest",
+    "build:docker": "docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/ryan-willis/gria:latest .",
+    "publish:docker": "docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/ryan-willis/gria:latest --push .",
     "start": "npx tsx src/api.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@fastify/caching": "^8.3.0",
-    "canvas": "^2.11.2",
+    "canvas": "3.2.1",
     "fastify": "^4.27.0",
-    "simple-icons": "^11.14.0"
+    "simple-icons": "^16.13.0"
   }
 }

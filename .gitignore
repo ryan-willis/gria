@@ -2,3 +2,5 @@ node_modules/
 dist/
 .env.test
 .env
+.DS_*
+slim.report.json

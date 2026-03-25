@@ -30,6 +30,14 @@ This project's dependencies:
 
 This project depends on `node-canvas`. If you run into issues with an `npm install`, follow the instructions in their repository: https://github.com/Automattic/node-canvas
 
+### Pre-requisites
+
+Several image libraries need to be present in order to build `node-canvas` with proper support:
+
+```bash
+brew install pkg-config cairo pango libpng jpeg giflib librsvg
+```
+
 To run the server locally:
 
 ```bash

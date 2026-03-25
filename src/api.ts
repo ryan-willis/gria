@@ -57,14 +57,19 @@ interface RepoGetParams {
   owner: string;
   repo: string;
 }
+
+const MAX_DESCRIPTION_LINES = 3;
+const ELLIPSIS = "...";
+const IMAGE_HEIGHT = 300;
+
 const handler = async (request: FastifyRequest, reply: FastifyReply) => {
   const { owner, repo } = request.params as RepoGetParams;
   app.log.info(`Fetching repo info for ${owner}/${repo}`);
   const repoData = await fetchRepoInfo(app.log, owner, repo);
   const languageIcons = await getLanguageIcons(repoData.langData);
-  const canvas = createCanvas(814, 464);
+  const canvas = createCanvas(814, IMAGE_HEIGHT);
   const ctx = canvas.getContext("2d");
-  const gra = ctx.createLinearGradient(0, 0, 0, 464);
+  const gra = ctx.createLinearGradient(0, 0, 0, IMAGE_HEIGHT);
   gra.addColorStop(0, "#073A67");
   gra.addColorStop(1, "#040B29");
   ctx.imageSmoothingEnabled = false;
@@ -82,9 +87,9 @@ const handler = async (request: FastifyRequest, reply: FastifyReply) => {
     repoData.description || "This repository has no description.",
     764
   );
-  if (lines.length > 8) {
-    lines = lines.slice(0, 8);
-    lines[7] = lines[7].slice(0, -3) + "...";
+  if (lines.length > MAX_DESCRIPTION_LINES) {
+    lines = lines.slice(0, MAX_DESCRIPTION_LINES);
+    lines[MAX_DESCRIPTION_LINES-1] = lines[MAX_DESCRIPTION_LINES-1].slice(0, -ELLIPSIS.length) + ELLIPSIS;
   }
   for (let i = 0; i < lines.length; i++) {
     ctx.fillText(lines[i], 20, 110 + i * 40, 764);
@@ -100,7 +105,7 @@ const handler = async (request: FastifyRequest, reply: FastifyReply) => {
         svg.replace("<svg", '<svg width="64" height="64"')
       ).toString("base64")}`;
     });
-    ctx.drawImage(img, 20 + i * 80, 380, 64, 64);
+    ctx.drawImage(img, 20 + i * 80, IMAGE_HEIGHT-80, 64, 64);
   }
 
   const img = await new Promise<Image>((resolve, reject) => {
@@ -117,8 +122,8 @@ const handler = async (request: FastifyRequest, reply: FastifyReply) => {
   );
 
   ctx.font = "bold 32pt 'Monaspace Neon'";
-  ctx.fillText(stargazers, 736 - stargazers.length * 24, 428, 96);
-  ctx.drawImage(img, 750, 390, 48, 48);
+  ctx.fillText(stargazers, 736 - stargazers.length * 24, IMAGE_HEIGHT-30, 96);
+  ctx.drawImage(img, 750, IMAGE_HEIGHT-70, 48, 48);
   reply.header("Content-Type", "image/png");
   reply.send(canvas.toBuffer("image/png"));
 };
